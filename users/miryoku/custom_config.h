@@ -5,6 +5,10 @@
 
 #pragma once
 
+// Implemented in manna-harbour_miryoku.c
+#define TAPPING_TERM_PER_KEY
+#define TAPPING_TERM_ACCENT 150
+
 #define MIRYOKU_LAYER_EXTRA \
 KC_TAB,            KC_Q,              KC_W,              KC_E,              KC_R,             KC_Y,              KC_U,              KC_UP,             KC_O,              KC_P,              \
 KC_LSFT,           KC_A,              KC_S,              KC_D,              KC_F,             KC_H,              KC_LEFT,           KC_DOWN,           KC_RGHT,           LGUI_T(KC_QUOT),   \

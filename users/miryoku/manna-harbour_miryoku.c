@@ -89,3 +89,14 @@ combo_t key_combos[] = {
   COMBO(thumbcombos_fun, KC_APP)
 };
 #endif
+
+// Customisation - tapping term per key: force the right alt to be classified as hold a little big quicker
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case ALGR_T(KC_X):
+        case ALGR_T(KC_SLSH):
+          return TAPPING_TERM_ACCENT;
+        default:
+            return TAPPING_TERM;
+    }
+}

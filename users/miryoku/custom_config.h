@@ -16,19 +16,19 @@ KC_LCTL,           KC_Z,              KC_X,              KC_C,              KC_V
 U_NP,              U_NP,              KC_ESC,            KC_SPC,            KC_LALT,          LT(U_SYM,KC_ENT),  LT(U_NUM,KC_BSPC), LT(U_FUN,KC_DEL),  U_NP,              U_NP
 
 #define MIRYOKU_LAYER_NAV \
-TD(U_TD_BOOT),     U_NA,              LCTL(KC_F),        U_NA,              KC_BSPC,           U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
+TD(U_TD_BOOT),     U_NA,              LCTL(KC_F),        KC_APP,            KC_BSPC,           U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
 KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           KC_ENT,            CW_TOGG,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,           \
 U_UND,             U_CUT,             U_CPY,             U_PST,             U_RDO,             KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_ENT,            KC_BSPC,           KC_DEL,            U_NP,              U_NP
 
 #define MIRYOKU_LAYER_MOUSE \
-TD(U_TD_BOOT),     U_NA,              LCTL(KC_F),        U_NA,              KC_BSPC,           U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
+TD(U_TD_BOOT),     U_NA,              LCTL(KC_F),        KC_APP,            KC_BSPC,           U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
 KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           KC_ENT,            U_NU,              KC_MS_L,           KC_MS_D,           KC_MS_U,           KC_MS_R,           \
 U_UND,             U_CUT,             U_CPY,             U_PST,             U_RDO,             U_NU,              KC_WH_L,           KC_WH_D,           KC_WH_U,           KC_WH_R,           \
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_BTN2,           KC_BTN1,           KC_BTN3,           U_NP,              U_NP
 
 #define MIRYOKU_LAYER_MEDIA \
-TD(U_TD_BOOT),     U_NA,              LCTL(KC_F),        U_NA,              KC_BSPC,           RGB_TOG,           RGB_MOD,           RGB_HUI,           RGB_SAI,           RGB_VAI,           \
+TD(U_TD_BOOT),     U_NA,              LCTL(KC_F),        KC_APP,            KC_BSPC,           RGB_TOG,           RGB_MOD,           RGB_HUI,           RGB_SAI,           RGB_VAI,           \
 KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           KC_ENT,            U_NU,              KC_MPRV,           KC_VOLD,           KC_VOLU,           KC_MNXT,           \
 U_UND,             U_CUT,             U_CPY,             U_PST,             U_RDO,             OU_AUTO,           U_NU,              U_NU,              U_NU,              U_NU,              \
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_MSTP,           KC_MPLY,           KC_MUTE,           U_NP,              U_NP

@@ -90,13 +90,13 @@ combo_t key_combos[] = {
 };
 #endif
 
-// Customisation - tapping term per key: force the right alt to be classified as hold a little big quicker
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+// Customisation - register right alt as hold in uncentrain circumstances
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case ALGR_T(KC_X):
         case ALGR_T(KC_SLSH):
-          return TAPPING_TERM_ACCENT;
+            return true;
         default:
-            return TAPPING_TERM;
+            return false;
     }
 }

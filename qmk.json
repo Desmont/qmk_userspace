@@ -3,6 +3,7 @@
     "build_targets": [
         ["all", "miryoku"],
         ["beekeeb/3w6hs", "miryoku"],
-        ["beekeeb/piantor", "miryoku"]
+        ["beekeeb/piantor", "miryoku"],
+        ["totem", "miryoku"]
     ]
 }

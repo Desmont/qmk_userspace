@@ -99,3 +99,14 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
             return false;
     }
 }
+
+// Customisation - Incrase tapping term for key combos involving Win keys
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LGUI_T(KC_A):
+        case LGUI_T(KC_O):
+            return TAPPING_TERM * 1.6;
+        default:
+            return TAPPING_TERM;
+    }
+}

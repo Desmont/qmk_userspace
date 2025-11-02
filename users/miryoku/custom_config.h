@@ -25,12 +25,12 @@ U_NP,              U_NP,              U_NA,              U_NA,              U_NA
 
 #define MIRYOKU_LAYER_MOUSE \
 TD(U_TD_BOOT),     U_NA,              LCTL(KC_F),        KC_APP,            KC_BSPC,           U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
-KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           KC_ENT,            U_NU,              KC_MS_L,           KC_MS_D,           KC_MS_U,           KC_MS_R,           \
-U_UND,             U_CUT,             U_CPY,             U_PST,             U_RDO,             U_NU,              KC_WH_L,           KC_WH_D,           KC_WH_U,           KC_WH_R,           \
-U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_BTN2,           KC_BTN1,           KC_BTN3,           U_NP,              U_NP
+KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           KC_ENT,            U_NU,              MS_LEFT,           MS_DOWN,           MS_UP,           MS_RGHT,           \
+U_UND,             U_CUT,             U_CPY,             U_PST,             U_RDO,             U_NU,              MS_WHLL,           MS_WHLD,           MS_WHLU,           MS_WHLR,           \
+U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              MS_BTN2,           MS_BTN1,           MS_BTN3,           U_NP,              U_NP
 
 #define MIRYOKU_LAYER_MEDIA \
-TD(U_TD_BOOT),     U_NA,              LCTL(KC_F),        KC_APP,            KC_BSPC,           RGB_TOG,           RGB_MOD,           RGB_HUI,           RGB_SAI,           RGB_VAI,           \
+TD(U_TD_BOOT),     U_NA,              LCTL(KC_F),        KC_APP,            KC_BSPC,           UG_TOGG,           UG_NEXT,           UG_HUEU,           UG_SATU,           UG_VALU,           \
 KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           KC_ENT,            U_NU,              KC_MPRV,           KC_VOLD,           KC_VOLU,           KC_MNXT,           \
 U_UND,             U_CUT,             U_CPY,             U_PST,             U_RDO,             OU_AUTO,           U_NU,              U_NU,              U_NU,              U_NU,              \
 U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_MSTP,           KC_MPLY,           KC_MUTE,           U_NP,              U_NP

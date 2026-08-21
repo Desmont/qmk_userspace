@@ -89,6 +89,15 @@ combo_t key_combos[] = {
 };
 #endif
 
+// Customisation - allow double-tap-hold auto-repeat on the home row.
+// Holding a mod-tap engages its modifier, so the letter can only be repeated by tapping the key and
+// then holding it again within this term. Returning 0 (the QUICK_TAP_TERM default set in config.h)
+// disables that, which is why it is scoped to mod-taps: the thumb and pinky layer-taps keep 0 so a
+// tap followed immediately by a hold still reaches the layer instead of repeating space or tab.
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
+    return IS_QK_MOD_TAP(keycode) ? 150 : QUICK_TAP_TERM;
+}
+
 // Customisation - Permissive Hold for the thumb layer-taps.
 // Without it, holding a thumb and tapping a key inside the tapping term performs the tap action, so
 // space + d emitted "space d" instead of Nav's paste. Scoped by target layer rather than by keycode:

@@ -13,7 +13,10 @@
 
 
 // Enable rapid switch from tap to hold, disables double tap hold auto-repeat.
-#define QUICK_TAP_TERM 0
+// Guarded so custom_config.h (included above) can override it.
+#if !defined(QUICK_TAP_TERM)
+#  define QUICK_TAP_TERM 0
+#endif
 
 // Auto Shift
 #define NO_AUTO_SHIFT_ALPHA

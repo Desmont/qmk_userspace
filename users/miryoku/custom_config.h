@@ -5,6 +5,12 @@
 
 #pragma once
 
+// Double-tap-hold auto-repeat, enabled per key for mod-taps only (see manna-harbour_miryoku.c).
+// Tap a home row key, then press and hold it again within the term, and the letter auto-repeats
+// instead of engaging the modifier. Layer-taps keep QUICK_TAP_TERM 0 so tapping a thumb and
+// immediately holding it still switches layer rather than repeating space/tab/enter.
+#define QUICK_TAP_TERM_PER_KEY
+
 // Chordal Hold adds an "opposite hands" rule: a tap-hold key rolled into another key on the SAME hand
 // settles as a tap, so home row mods and the Button layer-taps stop misfiring on same-hand rolls.
 // Opposite-hand chords fall through to HOLD_ON_OTHER_KEY_PRESS_PER_KEY below. Has no effect once the

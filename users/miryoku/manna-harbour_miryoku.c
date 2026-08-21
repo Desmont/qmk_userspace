@@ -89,6 +89,22 @@ combo_t key_combos[] = {
 };
 #endif
 
+// Customisation - exempt layer-taps from Chordal Hold's opposite-hands rule.
+// Thumb layer-taps such as LT(U_NAV,KC_SPC) are meant to be usable with either hand: holding the left
+// thumb and pressing a left-hand key is a legitimate chord (space + d is paste on Nav), but the default
+// rule treats it as a same-hand roll, settles the thumb as a tap and emits "space d" instead. Keep the
+// rule for mod-taps, which is where same-hand rolls actually misfire. Safe because
+// get_hold_on_other_key_press() below is false for layer-taps, so they still tap on a quick roll.
+#if defined(CHORDAL_HOLD)
+bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record,
+                      uint16_t other_keycode, keyrecord_t *other_record) {
+    if (IS_QK_LAYER_TAP(tap_hold_keycode)) {
+        return true;
+    }
+    return get_chordal_hold_default(tap_hold_record, other_record);
+}
+#endif
+
 // Customisation - register right alt as hold in uncertain circumstances.
 // Matched on the modifier rather than the tap keycode, so this stays correct whichever key the
 // selected alphabet layout puts AltGr on: X and . on Colemak-DH, Q on Dvorak, M on Halmak,

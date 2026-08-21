@@ -5,11 +5,25 @@
 
 #pragma once
 
+// Chordal Hold adds an "opposite hands" rule: a tap-hold key rolled into another key on the SAME hand
+// settles as a tap, so home row mods and the Button layer-taps stop misfiring on same-hand rolls.
+// Opposite-hand chords fall through to HOLD_ON_OTHER_KEY_PRESS_PER_KEY below. Has no effect once the
+// tapping term has elapsed, so deliberate holds are unaffected.
+// Handedness comes from the weak chordal_hold_layout QMK generates from keyboard.json geometry.
+#define CHORDAL_HOLD
+
 // If you press a dual-role key, press another key, and then release the dual-role key, all within the tapping term, by
 // default the dual-role key will perform its tap action. If the HOLD_ON_OTHER_KEY_PRESS option is enabled, the
 // dual-role key will perform its hold action instead.
 // Implemented in manna-harbour_miryoku.c
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+
+// Apply Shift/Ctrl on keydown, before the tap-hold decision is made, so Shift+click and Ctrl+scroll
+// with an external mouse are not laggy. Does not change how any key settles, so it cannot cause the
+// same-hand roll misfires that a blanket HOLD_ON_OTHER_KEY_PRESS does.
+#define SPECULATIVE_HOLD
+// Suppress speculation during the flow of fast typing, to avoid "flashing mods".
+#define SPECULATIVE_HOLD_FLOW_TERM 150
 
 #define MIRYOKU_LAYER_EXTRA \
 KC_TAB,            KC_Q,              KC_W,              KC_E,              KC_R,             KC_Y,              KC_U,              KC_UP,             KC_O,              KC_P,              \

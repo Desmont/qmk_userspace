@@ -89,15 +89,12 @@ combo_t key_combos[] = {
 };
 #endif
 
-// Customisation - register right alt as hold in uncentrain circumstances
+// Customisation - register right alt as hold in uncertain circumstances.
+// Matched on the modifier rather than the tap keycode, so this stays correct whichever key the
+// selected alphabet layout puts AltGr on: X and . on Colemak-DH, Q on Dvorak, M on Halmak,
+// / on BEAKL15, and ALGR_T(KC_DOT) on the custom Extra layer.
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case ALGR_T(KC_X):
-        case ALGR_T(KC_SLSH):
-            return true;
-        default:
-            return false;
-    }
+    return IS_QK_MOD_TAP(keycode) && QK_MOD_TAP_GET_MODS(keycode) == MOD_RALT;
 }
 
 // Customisation - Incrase tapping term for key combos involving Win keys

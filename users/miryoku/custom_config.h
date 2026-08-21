@@ -12,6 +12,12 @@
 // Handedness comes from the weak chordal_hold_layout QMK generates from keyboard.json geometry.
 #define CHORDAL_HOLD
 
+// Permissive Hold, enabled per key for the thumb layer-taps only (see manna-harbour_miryoku.c).
+// Gives LT() the intended semantics: tap for the key, hold-plus-key for the layer action. A nested
+// press (hold thumb, tap key, release thumb) settles as held, while a roll - which is what normal
+// typing produces when space overlaps the next letter - still settles as a tap.
+#define PERMISSIVE_HOLD_PER_KEY
+
 // If you press a dual-role key, press another key, and then release the dual-role key, all within the tapping term, by
 // default the dual-role key will perform its tap action. If the HOLD_ON_OTHER_KEY_PRESS option is enabled, the
 // dual-role key will perform its hold action instead.

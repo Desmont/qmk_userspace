@@ -89,6 +89,16 @@ combo_t key_combos[] = {
 };
 #endif
 
+// Customisation - Permissive Hold for the thumb layer-taps.
+// Without it, holding a thumb and tapping a key inside the tapping term performs the tap action, so
+// space + d emitted "space d" instead of Nav's paste. Scoped by target layer rather than by keycode:
+// the six thumbs target U_NAV/U_MOUSE/U_MEDIA/U_SYM/U_NUM/U_FUN, and only the bottom-corner pinky keys
+// target U_BUTTON. Those are excluded deliberately - they are held together with same-hand thumb mouse
+// buttons, and making them eager is what turned "szt" into "sT" via the Button layer's KC_LSFT.
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+    return IS_QK_LAYER_TAP(keycode) && QK_LAYER_TAP_GET_LAYER(keycode) != U_BUTTON;
+}
+
 // Customisation - exempt layer-taps from Chordal Hold's opposite-hands rule.
 // Thumb layer-taps such as LT(U_NAV,KC_SPC) are meant to be usable with either hand: holding the left
 // thumb and pressing a left-hand key is a legitimate chord (space + d is paste on Nav), but the default

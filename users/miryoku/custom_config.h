@@ -11,12 +11,6 @@
 // immediately holding it still switches layer rather than repeating space/tab/enter.
 #define QUICK_TAP_TERM_PER_KEY
 
-// Flow Tap: while typing, a tap-hold key pressed within this many ms of the previous key settles
-// immediately as a TAP, never a hold. This is what makes a thumb pressed right after a letter produce
-// its tap keycode instead of switching layer, so the letter stays on the base layer. A deliberate
-// chord after a brief pause is unaffected, because the flow term has elapsed by then.
-#define FLOW_TAP_TERM 150
-
 // Chordal Hold adds an "opposite hands" rule: a tap-hold key rolled into another key on the SAME hand
 // settles as a tap, so home row mods and the Button layer-taps stop misfiring on same-hand rolls.
 // Opposite-hand chords fall through to HOLD_ON_OTHER_KEY_PRESS_PER_KEY below. Has no effect once the

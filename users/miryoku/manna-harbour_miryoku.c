@@ -98,51 +98,6 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
     return IS_QK_MOD_TAP(keycode) ? 150 : QUICK_TAP_TERM;
 }
 
-// Customisation - Flow Tap on the thumb layer-taps only. EXPERIMENT.
-// A thumb pressed within the flow term of a letter settles as a tap, so the layer cannot engage and
-// the preceding letter stays on the base layer - including when that letter was pressed cold, which
-// the mod-tap-side version could not catch (its own previous key was already too old).
-// Mod-taps deliberately return 0: CHORDAL_HOLD's opposite-hands rule is what guards the home row,
-// and Speculative Hold does not protect anything - it only applies the mod earlier.
-// Excludes the U_BUTTON pinkies, matching get_permissive_hold's scoping; those are thumbs' business.
-// TRADEOFF: a layer chord started within the flow term of a letter now taps instead - space + d
-// straight after typing prints "space d" rather than pasting. Pause first and it chords normally.
-uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_keycode) {
-    if (!IS_QK_LAYER_TAP(keycode) || QK_LAYER_TAP_GET_LAYER(keycode) == U_BUTTON) {
-        return 0;
-    }
-    if (is_flow_tap_key(prev_keycode)) {
-        return FLOW_TAP_TERM;
-    }
-    return 0;
-}
-
-// Customisation - extend Flow Tap to every thumb key.
-// The core default covers KC_SPC and the alphas, so only the space thumb would be protected. The
-// other five thumbs tap to Tab/Enter/Backspace/Delete/Escape, which are just as likely to follow a
-// letter in normal typing, so add them. Copied from the weak default in action_tapping.c with those
-// five keycodes appended.
-bool is_flow_tap_key(uint16_t keycode) {
-    if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
-        return false; // Disable Flow Tap on hotkeys.
-    }
-    switch (get_tap_keycode(keycode)) {
-        case KC_SPC:
-        case KC_A ... KC_Z:
-        case KC_DOT:
-        case KC_COMM:
-        case KC_SCLN:
-        case KC_SLSH:
-        case KC_TAB:  // thumb -> Mouse
-        case KC_ENT:  // thumb -> Sym
-        case KC_BSPC: // thumb -> Num
-        case KC_DEL:  // thumb -> Fun
-        case KC_ESC:  // thumb -> Media
-            return true;
-    }
-    return false;
-}
-
 // Customisation - Permissive Hold for the thumb layer-taps.
 // Without it, holding a thumb and tapping a key inside the tapping term performs the tap action, so
 // space + d emitted "space d" instead of Nav's paste. Scoped by target layer rather than by keycode:

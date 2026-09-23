@@ -5,36 +5,34 @@
 
 #pragma once
 
-// Double-tap-hold auto-repeat, enabled per key for mod-taps only (see manna-harbour_miryoku.c).
-// Tap a home row key, then press and hold it again within the term, and the letter auto-repeats
-// instead of engaging the modifier. Layer-taps keep QUICK_TAP_TERM 0 so tapping a thumb and
-// immediately holding it still switches layer rather than repeating space/tab/enter.
+// Per-key hooks for the defines below are in manna-harbour_miryoku.c.
+
+// Tap then hold a home row key to auto-repeat the letter instead of engaging the mod.
+// e.g. tap T, then hold it: "tttt" instead of Shift.
 #define QUICK_TAP_TERM_PER_KEY
 
-// Chordal Hold adds an "opposite hands" rule: a tap-hold key rolled into another key on the SAME hand
-// settles as a tap, so home row mods and the Button layer-taps stop misfiring on same-hand rolls.
-// Opposite-hand chords fall through to HOLD_ON_OTHER_KEY_PRESS_PER_KEY below. Has no effect once the
-// tapping term has elapsed, so deliberate holds are unaffected.
-// Handedness comes from the weak chordal_hold_layout QMK generates from keyboard.json geometry.
+// A tap-hold key rolled into a same-hand key settles as a tap. Handedness comes from keyboard.json.
+// e.g. rolling S into T types "st", not Ctrl+T.
 #define CHORDAL_HOLD
 
-// Permissive Hold, enabled per key for the thumb layer-taps only (see manna-harbour_miryoku.c).
-// Gives LT() the intended semantics: tap for the key, hold-plus-key for the layer action. A nested
-// press (hold thumb, tap key, release thumb) settles as held, while a roll - which is what normal
-// typing produces when space overlaps the next letter - still settles as a tap.
+// A key pressed and released inside a thumb layer-tap or Shift mod-tap makes it a hold.
+// e.g. hold space, tap D, release space: paste (Nav), not "space d".
 #define PERMISSIVE_HOLD_PER_KEY
 
-// If you press a dual-role key, press another key, and then release the dual-role key, all within the tapping term, by
-// default the dual-role key will perform its tap action. If the HOLD_ON_OTHER_KEY_PRESS option is enabled, the
-// dual-role key will perform its hold action instead.
-// Implemented in manna-harbour_miryoku.c
+// Tapping term for mod-taps. Measured taps stayed under 140ms, holds started at 230ms.
+// Layer-taps keep TAPPING_TERM.
+// e.g. T alone held for 170ms is Shift, for 150ms it types "t".
+#define MOD_TAP_TERM 160
+
+// Pressing any other key makes the tap-hold key a hold. Used for AltGr only.
+// e.g. press X, then E before X is released: AltGr+E.
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 
-// Apply Shift/Ctrl on keydown, before the tap-hold decision is made, so Shift+click and Ctrl+scroll
-// with an external mouse are not laggy. Does not change how any key settles, so it cannot cause the
-// same-hand roll misfires that a blanket HOLD_ON_OTHER_KEY_PRESS does.
+// Apply Shift/Ctrl on keydown so Shift+click and Ctrl+scroll are not laggy. Doesn't change how keys settle.
+// e.g. hold T and click: the click is Shift+click immediately, before T settles.
 #define SPECULATIVE_HOLD
-// Suppress speculation during the flow of fast typing, to avoid "flashing mods".
+// Skip speculation while typing fast, to avoid flashing mods.
+// e.g. T pressed within 150ms of the previous key doesn't apply Shift early.
 #define SPECULATIVE_HOLD_FLOW_TERM 150
 
 #define MIRYOKU_LAYER_EXTRA \

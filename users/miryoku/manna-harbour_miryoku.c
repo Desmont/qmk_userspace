@@ -89,31 +89,23 @@ combo_t key_combos[] = {
 };
 #endif
 
-// Customisation - allow double-tap-hold auto-repeat on the home row.
-// Holding a mod-tap engages its modifier, so the letter can only be repeated by tapping the key and
-// then holding it again within this term. Returning 0 (the QUICK_TAP_TERM default set in config.h)
-// disables that, which is why it is scoped to mod-taps: the thumb and pinky layer-taps keep 0 so a
-// tap followed immediately by a hold still reaches the layer instead of repeating space or tab.
+// Customisation - tap-then-hold auto-repeats home row letters.
+// Mod-taps only: layer-taps keep 0 so tap-then-hold still reaches the layer.
+// e.g. tap-then-hold T repeats "t"; tap-then-hold space still switches to Nav.
 uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
     return IS_QK_MOD_TAP(keycode) ? 150 : QUICK_TAP_TERM;
 }
 
-// Customisation - Permissive Hold for the thumb layer-taps.
-// Without it, holding a thumb and tapping a key inside the tapping term performs the tap action, so
-// space + d emitted "space d" instead of Nav's paste. Scoped by target layer rather than by keycode:
-// the six thumbs target U_NAV/U_MOUSE/U_MEDIA/U_SYM/U_NUM/U_FUN, and only the bottom-corner pinky keys
-// target U_BUTTON. Those are excluded deliberately - they are held together with same-hand thumb mouse
-// buttons, and making them eager is what turned "szt" into "sT" via the Button layer's KC_LSFT.
+// Customisation - Permissive Hold for the thumb layer-taps and the Shift home row mods.
+// e.g. hold N, tap P, release N: "P" instead of "np".
+// Button layer-taps are excluded: eager, they turned "szt" into "sT".
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
-    return IS_QK_LAYER_TAP(keycode) && QK_LAYER_TAP_GET_LAYER(keycode) != U_BUTTON;
+    return (IS_QK_LAYER_TAP(keycode) && QK_LAYER_TAP_GET_LAYER(keycode) != U_BUTTON) ||
+           (IS_QK_MOD_TAP(keycode) && QK_MOD_TAP_GET_MODS(keycode) == MOD_LSFT);
 }
 
-// Customisation - exempt layer-taps from Chordal Hold's opposite-hands rule.
-// Thumb layer-taps such as LT(U_NAV,KC_SPC) are meant to be usable with either hand: holding the left
-// thumb and pressing a left-hand key is a legitimate chord (space + d is paste on Nav), but the default
-// rule treats it as a same-hand roll, settles the thumb as a tap and emits "space d" instead. Keep the
-// rule for mod-taps, which is where same-hand rolls actually misfire. Safe because
-// get_hold_on_other_key_press() below is false for layer-taps, so they still tap on a quick roll.
+// Customisation - exempt layer-taps from Chordal Hold, so same-hand thumb chords work.
+// e.g. left thumb space + left hand D is paste (Nav), not "space d".
 #if defined(CHORDAL_HOLD)
 bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record,
                       uint16_t other_keycode, keyrecord_t *other_record) {
@@ -125,20 +117,45 @@ bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record,
 #endif
 
 // Customisation - register right alt as hold in uncertain circumstances.
-// Matched on the modifier rather than the tap keycode, so this stays correct whichever key the
-// selected alphabet layout puts AltGr on: X and . on Colemak-DH, Q on Dvorak, M on Halmak,
-// / on BEAKL15, and ALGR_T(KC_DOT) on the custom Extra layer.
+// Matched on the modifier so it holds for whichever key the alphabet puts AltGr on.
+// e.g. X and . on Colemak-DH, Q on Dvorak.
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     return IS_QK_MOD_TAP(keycode) && QK_MOD_TAP_GET_MODS(keycode) == MOD_RALT;
 }
 
 // Customisation - Incrase tapping term for key combos involving Win keys
+// e.g. A (GUI) settles after 304ms, T (Shift) after MOD_TAP_TERM, space (Nav) after TAPPING_TERM.
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LGUI_T(KC_A):
         case LGUI_T(KC_O):
             return TAPPING_TERM * 1.6;
         default:
-            return TAPPING_TERM;
+            return IS_QK_MOD_TAP(keycode) ? MOD_TAP_TERM : TAPPING_TERM;
     }
+}
+
+// Customisation - stop modded keys (C(KC_V), KC_HASH) leaking their base key.
+// Any press clears weak mods, leaving V or 3 held. Released in pre-process, which runs right after
+// that clear and before tap-hold settles.
+// e.g. without this, holding paste and pressing T types "vvvv".
+static uint8_t held_modded_basic = KC_NO;
+
+bool pre_process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed && held_modded_basic != KC_NO) {
+        unregister_code(held_modded_basic);
+        held_modded_basic = KC_NO;
+    }
+    return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (IS_QK_MODS(keycode) && !IS_MODIFIER_KEYCODE(QK_MODS_GET_BASIC_KEYCODE(keycode))) {
+        if (record->event.pressed) {
+            held_modded_basic = QK_MODS_GET_BASIC_KEYCODE(keycode);
+        } else if (held_modded_basic == QK_MODS_GET_BASIC_KEYCODE(keycode)) {
+            held_modded_basic = KC_NO;
+        }
+    }
+    return true;
 }
